@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quem Quer Ser um Milionário da Gramática?</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+            background-color: #1a1a2e;
+            color: white; 
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: #16213e;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+        }
+        .alternativa {
+            display: block;
+            margin: 10px 0;
+            padding: 15px;
+            background-color: #e94560;
+            border: none;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+        .alternativa:hover {
+            background-color: #d32f4f;
+        }
+        .mensagem {
+            display: none;
+            padding: 15px;
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 5px;
+        }
+        .correto {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .errado {
+            background-color: #e74c3c;
+            color: white;
+        }
+        .contador {
+            font-size: 20px;
+            font-weight: bold;
+            color: #FFD700;
+            display: none;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Quem Quer Ser um Milionário da Gramática?</h1>
+        <p id="pergunta"></p>
+        <div id="alternativas"></div>
+        <p id="mensagem" class="mensagem"></p>
+        <p id="contador" class="contador"></p>
+    </div>
+
+    <script>
+        const perguntas = [
+            {
+                pergunta: "Qual das frases abaixo é uma frase verbal?",
+                alternativas: [
+                    "O céu azul.",
+                    "As flores coloridas.",
+                    "O menino correu no parque.",
+                    "A rua movimentada."
+                ],
+                resposta: 2
+            },
+            {
+                pergunta: "Qual das frases abaixo é uma frase nominal?",
+                alternativas: [
+                    "O cachorro dorme na varanda.",
+                    "A praça cheia de gente.",
+                    "Os alunos estudaram para a prova.",
+                    "A menina brinca com seu gato."
+                ],
+                resposta: 1
+            },
+            {
+                pergunta: "O que caracteriza um texto verbal?",
+                alternativas: [
+                    "Ele usa apenas imagens para se comunicar.",
+                    "Ele utiliza palavras para transmitir a mensagem.",
+                    "Ele é formado somente por gestos e símbolos.",
+                    "Ele só pode ser falado, nunca escrito."
+                ],
+                resposta: 1
+            },
+            {
+                pergunta: "Qual a função da vírgula em uma oração?",
+                alternativas: [
+                    "Indicar a pausa no discurso.",
+                    "Substituir o ponto final.",
+                    "Separar palavras semelhantes.",
+                    "Excluir palavras desnecessárias."
+                ],
+                resposta: 0
+            },
+            {
+                pergunta: "Quando usamos o acento indicativo de crase?",
+                alternativas: [
+                    "Antes de palavras masculinas.",
+                    "Antes de verbos.",
+                    "Antes de pronomes pessoais.",
+                    "Antes de palavras femininas."
+                ],
+                resposta: 3
+            },
+            {
+                pergunta: "Qual é a classe gramatical da palavra 'feliz'?",
+                alternativas: [
+                    "Substantivo.",
+                    "Adjetivo.",
+                    "Verbo.",
+                    "Pronome."
+                ],
+                resposta: 1
+            },
+            {
+                pergunta: "Qual das frases abaixo está no tempo futuro do pretérito?",
+                alternativas: [
+                    "Eu cantarei amanhã.",
+                    "Eu cantava todos os dias.",
+                    "Eu cantaria se tivesse tempo.",
+                    "Eu canto todo dia."
+                ],
+                resposta: 2
+            },
+            {
+                pergunta: "Qual a diferença entre 'por que' e 'porque'?",
+                alternativas: [
+                    "'Por que' é usado para fazer perguntas, 'porque' é usado para respostas.",
+                    "'Por que' é usado para respostas, 'porque' é usado para perguntas.",
+                    "'Por que' e 'porque' têm o mesmo significado.",
+                    "'Por que' e 'porque' são usados de forma intercambiável."
+                ],
+                resposta: 0
+            },
+            {
+                pergunta: "Qual é o plural da palavra 'dó'?",
+                alternativas: [
+                    "Dós",
+                    "Dois dó",
+                    "Dóis",
+                    "Dóes"
+                ],
+                resposta: 0
+            },
+            {
+                pergunta: "Qual frase está correta?",
+                alternativas: [
+                    "A gente vamos à praia.",
+                    "Nós vamos a praia.",
+                    "A gente vai à praia.",
+                    "Nós vai à praia."
+                ],
+                resposta: 2
+            }
+        ];
+
+        let perguntaAtual = 0;
+
+        function mostrarPergunta() {
+            if (perguntaAtual >= perguntas.length) {
+                document.getElementById("pergunta").innerText = "Parabéns! Você venceu!";
+                document.getElementById("alternativas").innerHTML = "";
+                return;
+            }
+
+            const pergunta = perguntas[perguntaAtual];
+            document.getElementById("pergunta").innerText = pergunta.pergunta;
+            const alternativasContainer = document.getElementById("alternativas");
+            alternativasContainer.innerHTML = "";
+
+            pergunta.alternativas.forEach((alternativa, index) => {
+                const button = document.createElement("button");
+                button.innerText = alternativa;
+                button.classList.add("alternativa");
+                button.onclick = () => verificarResposta(index);
+                alternativasContainer.appendChild(button);
+            });
+        }
+
+        function verificarResposta(indiceEscolhido) {
+            const mensagem = document.getElementById("mensagem");
+            const contador = document.getElementById("contador");
+            if (indiceEscolhido === perguntas[perguntaAtual].resposta) {
+                mensagem.innerText = "Resposta correta!";
+                mensagem.className = "mensagem correto";
+                mensagem.style.display = "block";
+                contador.style.display = "block";
+                let tempo = 5;
+                contador.innerText = `Próxima pergunta em ${tempo} segundos...`;
+                
+                const intervalo = setInterval(() => {
+                    tempo--;
+                    contador.innerText = `Próxima pergunta em ${tempo} segundos...`;
+                    if (tempo === 0) {
+                        clearInterval(intervalo);
+                        contador.style.display = "none";
+                        mensagem.style.display = "none";
+                        perguntaAtual++;
+                        mostrarPergunta();
+                    }
+                }, 1000);
+            } else {
+                mensagem.innerText = "Resposta errada! Tente novamente.";
+                mensagem.className = "mensagem errado";
+                mensagem.style.display = "block";
+            }
+        }
+
+        mostrarPergunta();
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
